@@ -23,6 +23,6 @@ data class UserDTO(
         val login: String,
         val email: String,
         val avatar: String? = null
-) {
-    fun toModel(withId: Long? = null) = User(withId, this.name, this.login, this.email, this.avatar)
-}
+)
+
+fun UserDTO.toModel(withId: Long? = null) = User(withId, this.name, this.login, this.email, this.avatar)
