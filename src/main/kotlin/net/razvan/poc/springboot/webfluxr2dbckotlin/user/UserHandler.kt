@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
-import java.lang.Exception
 
 @Component
 class UserHandler(val service: UserService) {
@@ -24,7 +23,7 @@ class UserHandler(val service: UserService) {
                 val criteriaValue = criterias.getFirst("email")
                 if (criteriaValue.isNullOrBlank()) {
                     ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("Incorrect search criteria value"))
-                } else  {
+                } else {
                     ServerResponse.ok().json().bodyAndAwait(service.findByEmail(criteriaValue))
                 }
             }
@@ -85,8 +84,8 @@ class UserHandler(val service: UserService) {
         return if (id == null) {
             ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("`id` must be numeric"))
         } else {
-                if (service.deleteOne(id)) ServerResponse.noContent().buildAndAwait()
-                else ServerResponse.status(HttpStatus.NOT_FOUND).json().bodyValueAndAwait(ErrorMessage("Resource $id not found"))
+            if (service.deleteOne(id)) ServerResponse.noContent().buildAndAwait()
+            else ServerResponse.status(HttpStatus.NOT_FOUND).json().bodyValueAndAwait(ErrorMessage("Resource $id not found"))
         }
     }
 }

@@ -13,6 +13,6 @@ fun User.toDto(
 
 // builders
 
-fun createUser(id: Long? = null, name: String = "a user", login: String = "auser", email: String = "auser@users.com") =  User(id, name, login, email)
+fun createUser(id: Long? = null, name: String = "a user", login: String = "auser", email: String = "auser@users.com") = User(id, name, login, email)
 
 

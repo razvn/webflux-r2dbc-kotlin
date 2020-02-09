@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.2.1.RELEASE"
-	id("io.spring.dependency-management") version "1.0.8.RELEASE"
-	id("name.remal.check-dependency-updates") version "1.0.158"
+	id("org.springframework.boot") version "2.2.4.RELEASE"
+	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	id("name.remal.check-dependency-updates") version "1.0.171"
 	kotlin("jvm") version "1.3.61"
 	kotlin("plugin.spring") version "1.3.61"
 }
@@ -20,13 +20,13 @@ repositories {
 // versions
 
 
-val reactorKotlinExtensionsVersion = "1.0.1.RELEASE"
+val reactorKotlinExtensionsVersion = "1.0.2.RELEASE"
 val h2Version = "1.4.200" // with 200 there are errors as data-r2dbc is not yet updated
 val mockkVersion = "1.9.3"
-val  springBootBomR2DbcVersion = "0.1.0.M2"
-val  jacksonKotlinModuleVersion = "2.10.1"
-val  r2dbch2Version = "0.8.0.RELEASE"
-val  reactorTestVersion = "3.3.1.RELEASE"
+val  springBootBomR2DbcVersion = "0.1.0.M3"
+val  jacksonKotlinModuleVersion = "2.10.2"
+val  r2dbch2Version = "0.8.2.RELEASE"
+val  reactorTestVersion = "3.3.2.RELEASE"
 
 dependencies {
 	implementation("org.springframework.boot.experimental:spring-boot-actuator-autoconfigure-r2dbc")

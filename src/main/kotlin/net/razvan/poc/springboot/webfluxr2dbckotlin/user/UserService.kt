@@ -15,6 +15,7 @@ class UserService(private val repo: UserRepository) {
         val existingUser = findById(id)
         return if (existingUser != null) repo.save(user.toModel(withId = id)).awaitFirstOrNull() else null
     }
+
     suspend fun deleteOne(id: Long): Boolean {
         val existingUser = findById(id)
         return if (existingUser != null) {

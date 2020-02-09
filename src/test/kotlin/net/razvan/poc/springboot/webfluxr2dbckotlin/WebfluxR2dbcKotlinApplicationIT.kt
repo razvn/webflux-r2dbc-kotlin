@@ -27,167 +27,167 @@ class WebfluxR2dbcKotlinApplicationIT(@Autowired val client: WebTestClient) {
 
     @Test
     fun contextLoads() {
-	}
+    }
 
-	@Nested
-	inner class Find {
-		@Test
-		fun `list of users`() {
-			val response = client.get()
-					.uri("/users")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isOk
-					.expectBodyList<User>()
-					.hasSize(usersList.size)
-					.returnResult()
-					.responseBody
+    @Nested
+    inner class Find {
+        @Test
+        fun `list of users`() {
+            val response = client.get()
+                    .uri("/users")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isOk
+                    .expectBodyList<User>()
+                    .hasSize(usersList.size)
+                    .returnResult()
+                    .responseBody
 
-			assertThat(response)
-					.isNotNull()
-					.allSatisfy { assertThat(it).isIn(usersList) }
-		}
+            assertThat(response)
+                    .isNotNull()
+                    .allSatisfy { assertThat(it).isIn(usersList) }
+        }
 
-		@Test
-		fun `existing user returns OK`() {
-			val expectedUser = usersList.firstOrNull { it.id != null && it.id == 1L }
-			assertThat(expectedUser).isNotNull()
+        @Test
+        fun `existing user returns OK`() {
+            val expectedUser = usersList.firstOrNull { it.id != null && it.id == 1L }
+            assertThat(expectedUser).isNotNull()
 
-			val response = client.get()
-					.uri("/users/1")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isOk
-					.expectBody(User::class.java)
-					.returnResult()
-					.responseBody
+            val response = client.get()
+                    .uri("/users/1")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isOk
+                    .expectBody(User::class.java)
+                    .returnResult()
+                    .responseBody
 
-			assertThat(response)
-					.isNotNull()
-					.isEqualTo(expectedUser)
-		}
+            assertThat(response)
+                    .isNotNull()
+                    .isEqualTo(expectedUser)
+        }
 
-		@Test
-		fun `inexisting user returns NotFound`() {
-			client.get()
-					.uri("/users/111")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isNotFound
+        @Test
+        fun `inexisting user returns NotFound`() {
+            client.get()
+                    .uri("/users/111")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNotFound
 
-		}
+        }
 
-		@Test
-		fun `id not a number returns BadRequest`() {
-			client.get()
-					.uri("/users/abc")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("`id` must be numeric")
+        @Test
+        fun `id not a number returns BadRequest`() {
+            client.get()
+                    .uri("/users/abc")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("`id` must be numeric")
 
-		}
-	}
+        }
+    }
 
-	@Nested
-	inner class Search {
+    @Nested
+    inner class Search {
 
-		@Test
-		fun `returns OK`() {
-			val response = client.get()
-					.uri("/users/search?email=test2@users.com")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isOk
-					.expectBodyList<User>()
-					.hasSize(1)
-					.returnResult()
-					.responseBody
+        @Test
+        fun `returns OK`() {
+            val response = client.get()
+                    .uri("/users/search?email=test2@users.com")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isOk
+                    .expectBodyList<User>()
+                    .hasSize(1)
+                    .returnResult()
+                    .responseBody
 
-			assertThat(response)
-					.isNotNull()
-					.allSatisfy { user ->
-						assertThat(user).isIn(
-								usersList.filter { it.email == "test2@users.com" }
-						)
-					}
-		}
+            assertThat(response)
+                    .isNotNull()
+                    .allSatisfy { user ->
+                        assertThat(user).isIn(
+                                usersList.filter { it.email == "test2@users.com" }
+                        )
+                    }
+        }
 
-		@Test
-		fun `empty email value returns BadRequest`() {
-			client.get()
-					.uri("/users/search?email=")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Incorrect search criteria value")
+        @Test
+        fun `empty email value returns BadRequest`() {
+            client.get()
+                    .uri("/users/search?email=")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Incorrect search criteria value")
 
-		}
+        }
 
-		@Test
-		fun `empty search returns BadRequest`() {
-			client.get()
-					.uri("/users/search?email=")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Incorrect search criteria value")
+        @Test
+        fun `empty search returns BadRequest`() {
+            client.get()
+                    .uri("/users/search?email=")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Incorrect search criteria value")
 
-		}
+        }
 
-		@Test
-		fun `no search returns BadRequest`() {
-			client.get()
-					.uri("/users/search")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Search must have query params")
+        @Test
+        fun `no search returns BadRequest`() {
+            client.get()
+                    .uri("/users/search")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Search must have query params")
 
-		}
-	}
+        }
+    }
 
-	@Nested
-	inner class Add {
-		@Test
-		fun `returns OK`() {
-			val newUser = UserDTO("New Test", "newtest", "newtest@users.com", "testnew.png")
+    @Nested
+    inner class Add {
+        @Test
+        fun `returns OK`() {
+            val newUser = UserDTO("New Test", "newtest", "newtest@users.com", "testnew.png")
 
-			val response = client.post()
-					.uri("/users")
-					.contentType(MediaType.APPLICATION_JSON)
-					.body(BodyInserters.fromValue(newUser))
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isCreated
-					.expectBody(User::class.java)
-					.returnResult()
-					.responseBody
+            val response = client.post()
+                    .uri("/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(newUser))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isCreated
+                    .expectBody(User::class.java)
+                    .returnResult()
+                    .responseBody
 
-			assertThat(response)
-					.isNotNull()
-					.isEqualToComparingOnlyGivenFields(newUser, "name", "login", "email", "avatar")
-		}
+            assertThat(response)
+                    .isNotNull()
+                    .isEqualToComparingOnlyGivenFields(newUser, "name", "login", "email", "avatar")
+        }
 
-		@Test
-		fun `bad format returns BadRequest`() {
-			val newUser = "bad format"
+        @Test
+        fun `bad format returns BadRequest`() {
+            val newUser = "bad format"
 
-			client.post()
-					.uri("/users")
-					.contentType(MediaType.APPLICATION_JSON)
-					.body(BodyInserters.fromValue(newUser))
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Invalid body")
-		}
-	}
+            client.post()
+                    .uri("/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(newUser))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Invalid body")
+        }
+    }
 
     @Nested
     inner class Update {
@@ -214,8 +214,8 @@ class WebfluxR2dbcKotlinApplicationIT(@Autowired val client: WebTestClient) {
 
         @Test
         fun `id not a number returns BadRequest`() {
-			val updateUser = usersList.firstOrNull { it.id != null && it.id == 2L }?.toDto(avatar = "updatedavatar.png")
-			assertThat(updateUser).isNotNull()
+            val updateUser = usersList.firstOrNull { it.id != null && it.id == 2L }?.toDto(avatar = "updatedavatar.png")
+            assertThat(updateUser).isNotNull()
 
             client.put()
                     .uri("/users/abc")
@@ -229,73 +229,73 @@ class WebfluxR2dbcKotlinApplicationIT(@Autowired val client: WebTestClient) {
 
         }
 
-		@Test
-		fun `bad format returns BadRequest`() {
-			val updateUser = "bad format"
+        @Test
+        fun `bad format returns BadRequest`() {
+            val updateUser = "bad format"
 
-			client.put()
-					.uri("/users/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.body(BodyInserters.fromValue(updateUser))
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Invalid body")
-		}
+            client.put()
+                    .uri("/users/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(updateUser))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Invalid body")
+        }
 
-		@Test
-		fun `inexisting user returns NotFound`() {
-			val updateUser = usersList.firstOrNull { it.id != null && it.id == 2L }?.toDto(avatar = "updatedavatar.png")
-			assertThat(updateUser).isNotNull()
+        @Test
+        fun `inexisting user returns NotFound`() {
+            val updateUser = usersList.firstOrNull { it.id != null && it.id == 2L }?.toDto(avatar = "updatedavatar.png")
+            assertThat(updateUser).isNotNull()
 
-			client.put()
-					.uri("/users/999")
-					.contentType(MediaType.APPLICATION_JSON)
-					.body(BodyInserters.fromValue(updateUser!!))
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isNotFound
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Resource 999 not found")
-		}
+            client.put()
+                    .uri("/users/999")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(updateUser!!))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNotFound
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Resource 999 not found")
+        }
     }
 
-	@Nested
-	inner class Delete {
+    @Nested
+    inner class Delete {
 
-		@Test
-		fun `returns Ok`() {
+        @Test
+        fun `returns Ok`() {
 
-			client.delete()
-					.uri("/users/3")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isNoContent
-		}
+            client.delete()
+                    .uri("/users/3")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNoContent
+        }
 
-		@Test
-		fun `inexisting user returns NotFound`() {
+        @Test
+        fun `inexisting user returns NotFound`() {
 
-			client.delete()
-					.uri("/users/999")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isNotFound
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("Resource 999 not found")
-		}
+            client.delete()
+                    .uri("/users/999")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNotFound
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("Resource 999 not found")
+        }
 
-		@Test
-		fun `id not a number returns BadRequest`() {
-			client.delete()
-					.uri("/users/abc")
-					.accept(MediaType.APPLICATION_JSON)
-					.exchange()
-					.expectStatus().isBadRequest
-					.expectBody()
-					.jsonPath("$.message").isEqualTo("`id` must be numeric")
+        @Test
+        fun `id not a number returns BadRequest`() {
+            client.delete()
+                    .uri("/users/abc")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest
+                    .expectBody()
+                    .jsonPath("$.message").isEqualTo("`id` must be numeric")
 
-		}
-	}
+        }
+    }
 }

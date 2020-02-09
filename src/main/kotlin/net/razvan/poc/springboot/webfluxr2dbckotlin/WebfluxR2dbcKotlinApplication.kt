@@ -7,6 +7,6 @@ import org.springframework.boot.runApplication
 class WebfluxR2dbcKotlinApplication
 
 fun main(args: Array<String>) {
-	runApplication<WebfluxR2dbcKotlinApplication>(*args)
+    runApplication<WebfluxR2dbcKotlinApplication>(*args)
 }
 
