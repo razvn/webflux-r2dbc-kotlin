@@ -4,7 +4,7 @@ Test project for Spring Boot/Kotlin with coroutines integration and R2DBC reposi
 
 ### Base project
 
-[stat.spring.io](https://start.spring.io/#!type=gradle-project&language=kotlin&platformVersion=2.2.1.RELEASE&packaging=jar&jvmVersion=1.8&groupId=net.razvan.poc.spring-boot&artifactId=webflux-r2dbc-kotlin&name=webflux-r2dbc-kotlin&description=Demo%20project%20for%20Spring%20Boot&packageName=net.razvan.poc.spring-boot.webflux-r2dbc-kotlin&dependencies=webflux,data-r2dbc,h2,actuator)
+[stat.spring.io](https://start.spring.io/#!type=gradle-project&language=kotlin&platformVersion=2.3.2.RELEASE&packaging=jar&jvmVersion=11&groupId=net.razvan.poc.spring-boot&artifactId=webflux-r2dbc-kotlin&name=webflux-r2dbc-kotlin&description=Demo%20project%20for%20Spring%20Boot&packageName=net.razvan.poc.spring-boot.webflux-r2dbc-kotlin&dependencies=webflux,data-r2dbc,h2,actuator)
  - gradle (kotlin)
  - kotlin
  - webflux
@@ -12,17 +12,20 @@ Test project for Spring Boot/Kotlin with coroutines integration and R2DBC reposi
  - h2
  - actuator
  
+ Versions:
+ - Spring Boot 2.3.2
+ - Gradle 6.5.1
+ - Kotlin 1.3.72
+ - MockK 1.10.0
+ 
 ### Extra dependencies
 
 ````kotlin
-implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.0.RELEASE")
-testImplementation("io.mockk:mockk:1.9")
+testImplementation("io.mockk:mockk:1.10.0")
 ````
 
 ### Extra remarks
-- Had to manual set the h2 version to a previous one as r2dbc-h2 can't handle (yet) the changes in 1.4.200
 - Unit tests and Integration tests are including (100% coverage :))
-- Upgraded to Gradle 6.0
 
 ### Reference Documentation
 For further reference, please consider the following sections:

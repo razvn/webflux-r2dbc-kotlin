@@ -1,5 +1,6 @@
 package net.razvan.poc.springboot.webfluxr2dbckotlin.user
 
+import io.r2dbc.spi.ConnectionFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.first
@@ -10,24 +11,36 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest
+import org.springframework.core.io.DefaultResourceLoader
+import org.springframework.core.io.ResourceLoader
+import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
 import reactor.kotlin.core.publisher.toFlux
 import java.util.stream.Stream
+
 
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @DataR2dbcTest
-internal class UserServiceIT {
-    @Autowired
-    private lateinit var repo: UserRepository
-
+internal class UserServiceIT(
+    @Autowired private val connectionFactory: ConnectionFactory,
+    @Autowired private val repo: UserRepository
+) {
     private lateinit var service: UserService
+
+    init {
+        val resourceLoader: ResourceLoader = DefaultResourceLoader()
+        val scripts = arrayOf(
+            resourceLoader.getResource("classpath:schema.sql"),
+            resourceLoader.getResource("classpath:data.sql")
+        )
+        ResourceDatabasePopulator(*scripts).execute(connectionFactory).block()
+    }
 
     @BeforeAll
     fun beforeAll() {
         initDatabase()
         service = UserService(repo)
-
     }
 
     @Test
@@ -142,13 +155,12 @@ internal class UserServiceIT {
     }
 
     private fun initDatabase() {
-
         repo.deleteAll().subscribe()
 
         val initData = Stream.of(
-                User(null, "User1", "user01", "user1@users.com", "user1.png"),
-                User(null, "User2", "user02", "user2@users.com", "user2.png"),
-                User(null, "User3", "user03", "user3@users.com", "user3.png")
+            User(null, "User1", "user01", "user1@users.com", "user1.png"),
+            User(null, "User2", "user02", "user2@users.com", "user2.png"),
+            User(null, "User3", "user03", "user3@users.com", "user3.png")
         )
         val saveAll = repo.saveAll(initData.toFlux())
         saveAll.subscribe()

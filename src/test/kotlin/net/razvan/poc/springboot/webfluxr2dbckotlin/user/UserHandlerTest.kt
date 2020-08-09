@@ -41,7 +41,6 @@ internal class UserHandlerTest {
         runBlocking {
             val response = handler.findAll(request)
             assertThat(response.statusCode()).isEqualTo(HttpStatus.OK)
-
         }
     }
 
