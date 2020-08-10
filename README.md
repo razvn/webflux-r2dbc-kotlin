@@ -1,6 +1,6 @@
 # POC WebFlux-R2DBC H2-Kotlin
 
-Test project for Spring Boot/Kotlin with coroutines integration and R2DBC repositories.
+Test project for Spring Boot 2.3.2/Kotlin with coroutines integration and R2DBC repositories. Testcontainers (MySql or PostgerSql) can be used for testing. 
 
 ### Base project
 
@@ -17,15 +17,20 @@ Test project for Spring Boot/Kotlin with coroutines integration and R2DBC reposi
  - Gradle 6.5.1
  - Kotlin 1.3.72
  - MockK 1.10.0
+ - Testcontainers (Mysql et Postgres) 1.14.3
  
 ### Extra dependencies
 
 ````kotlin
 testImplementation("io.mockk:mockk:1.10.0")
+testImplementation("org.testcontainers:postgresql:1.14.3")
+testImplementation("org.testcontainers:mysql:1.14.3")
 ````
 
-### Extra remarks
+### Remarks
 - Unit tests and Integration tests are including (100% coverage :))
+- Testcontainers can be used for tests with either MySQL or PostgreSQL just set the test `application.properties` property: 
+`app.test.testcontainer.db` to either `mysql` or `postgres` (anything else will use h2)
 
 ### Reference Documentation
 For further reference, please consider the following sections:

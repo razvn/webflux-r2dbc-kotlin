@@ -31,11 +31,18 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 
+	runtimeOnly("dev.miku:r2dbc-mysql")
+	runtimeOnly("io.r2dbc:r2dbc-postgresql")
+	runtimeOnly("mysql:mysql-connector-java")
+	runtimeOnly("org.postgresql:postgresql")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("io.mockk:mockk:$mockkVersion")
+	testImplementation("org.testcontainers:postgresql:1.14.3")
+	testImplementation("org.testcontainers:mysql:1.14.3")
 }
 
 tasks.withType<Test> {

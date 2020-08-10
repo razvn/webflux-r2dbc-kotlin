@@ -13,12 +13,14 @@ import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
 import org.springframework.http.MediaType
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBodyList
 import org.springframework.web.reactive.function.BodyInserters
 
 @SpringBootTest
 @AutoConfigureWebTestClient
+@ContextConfiguration(initializers = [TestContainerInitializer::class])
 class WebfluxR2dbcKotlinApplicationIT(
     @Autowired val client: WebTestClient,
     @Autowired val connectionFactory: ConnectionFactory

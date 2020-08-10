@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import net.razvan.poc.springboot.webfluxr2dbckotlin.TestContainerInitializer
 import net.razvan.poc.springboot.webfluxr2dbckotlin.toDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
+import org.springframework.test.context.ContextConfiguration
 import reactor.kotlin.core.publisher.toFlux
 import java.util.stream.Stream
 
@@ -22,6 +24,7 @@ import java.util.stream.Stream
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @DataR2dbcTest
+@ContextConfiguration(initializers = [TestContainerInitializer::class])
 internal class UserServiceIT(
     @Autowired private val connectionFactory: ConnectionFactory,
     @Autowired private val repo: UserRepository
